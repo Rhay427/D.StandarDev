@@ -1,0 +1,51 @@
+name: Bug
+description: Something in the installer, the skills, or the docs is broken.
+labels: [bug]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      options:
+        - install.sh
+        - claude/CLAUDE.md (global rules)
+        - claude/skills/ (a skill)
+        - claude/settings.json
+        - README / docs
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead. Paste the exact error if there is one.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. git clone ...
+        2. ./install.sh
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: OS and shell
+      description: Only needed for installer bugs.
+      placeholder: macOS 15.6, zsh 5.9
+
+  - type: dropdown
+    id: install
+    attributes:
+      label: Install type
+      options:
+        - Fresh install
+        - UPDATE=1 refresh
+        - Not applicable
