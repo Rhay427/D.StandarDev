@@ -1,2 +1,7 @@
 .DS_Store
 *.log
+
+# Never sync a live Claude config back into the repo — these accumulate MCP tokens
+.env*
+*.local.json
+.mcp.json
