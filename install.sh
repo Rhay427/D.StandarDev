@@ -94,6 +94,19 @@ if [ "${SKIP_PLUGINS:-0}" = "1" ]; then
   exit 0
 fi
 
+# Re-run after pulling repo changes: rules and skills were already refreshed above,
+# so this only pulls newer plugin versions instead of re-installing.
+if [ "${UPDATE:-0}" = "1" ]; then
+  claude plugin marketplace update >/dev/null 2>&1 && say "marketplaces refreshed" \
+    || warn "marketplace refresh failed"
+  for p in "${PLUGINS[@]}"; do
+    claude plugin update -y "$p" >/dev/null 2>&1 && say "updated: $p" \
+      || warn "not installed or already current: $p"
+  done
+  say "done — restart Claude Code to load everything."
+  exit 0
+fi
+
 for m in "${MARKETPLACES[@]}"; do
   claude plugin marketplace add "$m" >/dev/null 2>&1 && say "marketplace: $m" \
     || warn "marketplace already present or failed: $m"

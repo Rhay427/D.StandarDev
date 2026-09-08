@@ -253,6 +253,25 @@ only if you don't already have one, then registers the marketplaces and installs
 
 Then restart Claude Code.
 
+### Updating
+
+Re-running the installer *is* the update path — it's idempotent and backs up before it writes:
+
+```bash
+git pull
+./install.sh              # refresh rules, skills, marketplaces, plugins
+UPDATE=1 ./install.sh     # same, but pull newer plugin versions instead of re-installing
+```
+
+A re-run replaces each skill directory outright, so a file deleted from the repo also disappears
+from `~/.claude` — and the copy it replaced still lands in `~/.claude/backups/standardev-<timestamp>/`.
+Skills you added yourself and aren't in this repo are left alone.
+
+Your `settings.json` is never overwritten once it exists; if a release changes the defaults, the
+script says so and you merge by hand.
+
+Restart Claude Code afterwards — plugin changes only take effect in a new session.
+
 ### Profiles — don't take the parts you won't use
 
 Every plugin costs a little always-on context whether or not you trigger it, so install the tier
