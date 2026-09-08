@@ -97,6 +97,7 @@ fi
 # Re-run after pulling repo changes: rules and skills were already refreshed above,
 # so this only pulls newer plugin versions instead of re-installing.
 if [ "${UPDATE:-0}" = "1" ]; then
+  say "refreshing marketplaces (this takes a moment)..."
   claude plugin marketplace update >/dev/null 2>&1 && say "marketplaces refreshed" \
     || warn "marketplace refresh failed"
   for p in "${PLUGINS[@]}"; do
