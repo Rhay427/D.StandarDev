@@ -29,17 +29,16 @@ Projects vary; use whichever of these (or a mix) is already established in the r
 
 ## UI / animation library decision hierarchy
 
-Same reuse-before-adding logic, applied to component libraries and animation:
+Same reuse-before-adding logic, applied to libraries:
 
 1. Existing project component / existing design system
 2. Existing installed dependency
 3. Native platform capability (e.g. the CSS View Transitions API directly — often the actual answer before reaching for a library)
-4. Approved reference library, matched to the job:
-   - **Motion** — default for React/UI animation orchestration
-   - **Anime.js** — only when Canvas/SVG timeline control is the actual requirement, outside React's declarative model
-   - **Kokonut UI** — pattern/inspiration source to adapt, not an installed dependency by default
-   - **Transition.dev** — reference for transition/motion patterns, not an automatic dependency
+4. Approved references, matched to the job. These are three different kinds of thing; don't conflate them:
+   - **Component foundation** — **shadcn/ui**, and only when it's already installed or the project already follows compatible primitives. It's a foundation, not the visual identity: adapt it rather than shipping the default look.
+   - **Component inspiration/reference** — **21st.dev** for a specialized component or interaction, **Kokonut UI** for patterns. Adapt the pattern into the existing design system; neither is an automatic dependency.
+   - **Animation** — **Motion** as the default for React/UI animation orchestration; **Anime.js** only when Canvas/SVG timeline control is the actual requirement, outside React's declarative model; **Transition.dev** as a reference for transition patterns, not an automatic dependency.
 5. New dependency — justify against 2–4 first
 6. Custom implementation — last resort, not the first move
 
-Don't install any of these just because they appear in this list.
+Don't install any of these just because they appear in this list. For picking a reference by the kind of design problem (UX flow vs. composition vs. component), see `design-references.md`.

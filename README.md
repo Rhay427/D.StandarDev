@@ -311,23 +311,53 @@ between them; the bodies load only when a task actually matches.
 work actually calls for them — not on every frontend task:
 
 **`references/component-reuse.md`** — the search technique for finding a component worth reusing,
-and how to judge a candidate once you've found one. Pulled in when you're genuinely creating or
-evaluating a UI component, not as a checklist for every change.
+and how to judge a candidate once you've found one. It also separates three things that are easy to
+conflate: a component *foundation* (shadcn/ui — used only when already installed or compatible), a
+component *inspiration source* (21st.dev, Kokonut UI — adapted, never auto-installed), and an
+*animation* library (Motion, Anime.js, Transition.dev). Pulled in when you're genuinely creating or
+evaluating a component, not as a checklist for every change.
 
-**`references/design-references.md`** — a small curated set of sites, each with the *principle*
-extracted rather than the layout. Gated to new-site or major-redesign work only, so routine feature
-work never pays for it:
+**`references/design-references.md`** — the design layer. Gated to new-site work, major redesigns,
+genuinely new UI with no established pattern, or an explicit request for design exploration, so
+routine feature work never pays for it. Its first job is routing — consult *one* reference for the
+problem you actually have, not all of them:
 
-| Site | Principle |
+```
+Existing project pattern?
+  ├─ yes → reuse / adapt, stop here
+  └─ no → what's actually missing?
+       ├─ UX / workflow / flow   → Mobbin
+       ├─ page composition        → UIDatabase
+       ├─ a component             → existing dependency → shadcn/ui → 21st.dev
+       └─ visual direction        → frontend-design (primary), the sites below as pointers
+```
+
+All of these are third-party resources, credited here and linked in the skill itself. None of their
+content is reproduced in this repo — what's stored is my one-line note on *why* each is worth
+opening:
+
+| Reference | Role in the skill |
 |---|---|
-| [bklit.com](https://bklit.com/) | Approachable, personality-driven product presentation — technical rigor paired with a human voice, not a sterile dashboard tone. |
-| [boneyard.vercel.app](https://boneyard.vercel.app/) | Before/after visual storytelling — contrast does the explaining instead of prose. |
-| [efferd.com](https://efferd.com/) | Minimalist developer-first hierarchy — reach the point fast, no marketing build-up. |
-| [transition.dev](https://transition.dev/) | Transition and motion reference. |
+| [Mobbin](https://mobbin.com/) | Production UX patterns — flows, forms, settings, navigation, dashboards, mobile behavior |
+| [UIDatabase](https://uidatabase.co/) | UI composition — arrangement, hierarchy, spacing, data presentation |
+| [shadcn/ui](https://ui.shadcn.com/) | Component foundation, only where already present or compatible |
+| [21st.dev](https://21st.dev/) | Specialized component and interaction reference |
+| [bklit.com](https://bklit.com/) | Personality-driven product presentation over a sterile dashboard tone |
+| [boneyard.vercel.app](https://boneyard.vercel.app/) | Before/after visual storytelling — contrast explains instead of prose |
+| [efferd.com](https://efferd.com/) | Minimalist developer-first hierarchy |
+| [transition.dev](https://transition.dev/) | Transition and motion reference |
 
-The instruction attached to that list matters more than the list: **extract the principle, don't
-copy the layout** — and for aesthetic direction itself, hand off to the `frontend-design` plugin
-rather than treating these rows as a substitute for it.
+The instructions attached to that table matter more than the table: **extract the principle, don't
+copy the layout**, treat shadcn as a foundation rather than a visual identity, and hand aesthetic
+direction to the `frontend-design` plugin rather than treating these rows as a substitute for it.
+
+The same file carries the anti-generic rules — the defaults that make AI-generated UI recognizable
+(a card around every section, cards inside cards, gradients, decorative blobs, three-column feature
+grids, an icon beside every label, unadapted shadcn styling) and the instruction to build hierarchy
+from typography, spacing, alignment, grouping, and contrast *before* reaching for cards and shadows.
+"Modern" is defined there as deliberate, clear, readable, and context-appropriate — not futuristic
+or flashy by default. A short contextual rule covers government and institutional work, where the
+target is modern government > enterprise application > SaaS startup > experimental interface.
 
 ---
 
