@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img"
+     aria-label="D.StandarDev versus a default Claude Code install. The setup adds 9,812 always-on tokens once per session, repaid in about 0.29 tasks. Agent tokens across a six-build benchmark fall from 430.7k to 229.4k, a 47 percent reduction. Cost per five tasks falls 63 percent on Haiku, 75 percent on Sonnet and 42 percent on Opus.">
+  <style>
+    .surface { fill: #fcfcfb; } .tile { fill: #f0efec; }
+    .s1 { fill: #2a78d6; } .s2 { fill: #eb6834; }
+    .ttl  { fill: #0b0b0b; font: 600 17px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+    .sub  { fill: #52514e; font: 400 12px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+    .ptl  { fill: #0b0b0b; font: 600 12.5px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+    .val  { fill: #0b0b0b; font: 600 12px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; text-anchor: middle; }
+    .cat  { fill: #52514e; font: 400 11px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; text-anchor: middle; }
+    .dlt  { fill: #52514e; font: 600 11.5px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; text-anchor: middle; }
+    .hero { fill: #0b0b0b; font: 600 38px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+    .hlb  { fill: #52514e; font: 400 11.5px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+    .hnt  { fill: #0b0b0b; font: 600 11.5px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+    .axis { stroke: #d9d8d4; stroke-width: 1; }
+    @media (prefers-color-scheme: dark) {
+      .surface { fill: #1a1a19; } .tile { fill: #262624; }
+      .s1 { fill: #3987e5; } .s2 { fill: #d95926; }
+      .ttl, .ptl, .val, .hero, .hnt { fill: #ffffff; }
+      .sub, .cat, .dlt, .hlb { fill: #c3c2b7; }
+      .axis { stroke: #3a3a37; }
+    }
+  </style>
+  <rect class="surface" x="0" y="0" width="900" height="400" rx="10"/>
+
+  <text class="ttl" x="28" y="34">Default Claude Code vs. D.StandarDev</text>
+  <text class="sub" x="28" y="54">One fixed cost at startup; a saving on every task after it.</text>
+
+  <rect class="s1" x="330" y="70" width="10" height="10" rx="2"/>
+  <text class="cat" x="346" y="79" style="text-anchor:start">Default install</text>
+  <rect class="s2" x="440" y="70" width="10" height="10" rx="2"/>
+  <text class="cat" x="456" y="79" style="text-anchor:start">D.StandarDev</text>
+
+  <rect class="tile" x="28" y="96" width="232" height="204" rx="8"/>
+  <text class="hlb"  x="52" y="130">THE COST</text>
+  <text class="hero" x="52" y="180">+9,812</text>
+  <text class="hlb"  x="52" y="202">always-on tokens, added once</text>
+  <text class="hlb"  x="52" y="220">per session &#8212; not per task</text>
+  <line class="axis" x1="52" y1="240" x2="236" y2="240"/>
+  <text class="hnt"  x="52" y="264">Repaid in ~0.29 tasks</text>
+  <text class="hlb"  x="52" y="284">at 33.5k tokens saved per task</text>
+
+  <text class="ptl" x="300" y="112">Agent tokens, 6-build benchmark</text>
+  <text class="ptl" x="620" y="112">Cost per 5 tasks (USD)</text>
+
+<path class="s1" d="M349 300.0 L349 146.0 Q349 142.0 353 142.0 L425 142.0 Q429 142.0 429 146.0 L429 300.0 Z"/>
+  <text class="val" x="389" y="134.0">430.7k</text>
+  <path class="s2" d="M431 300.0 L431 219.9 Q431 215.9 435 215.9 L507 215.9 Q511 215.9 511 219.9 L511 300.0 Z"/>
+  <text class="val" x="471" y="207.9">229.4k</text>
+  <path class="s1" d="M627 300.0 L627 269.5 Q627 265.5 631 265.5 L657 265.5 Q661 265.5 661 269.5 L661 300.0 Z"/>
+  <text class="val" x="644" y="257.5">.030</text>
+  <path class="s2" d="M663 300.0 L663 291.3 Q663 287.3 667 287.3 L693 287.3 Q697 287.3 697 291.3 L697 300.0 Z"/>
+  <text class="val" x="680" y="279.3">.011</text>
+  <path class="s1" d="M715 300.0 L715 146.1 Q715 142.1 719 142.1 L745 142.1 Q749 142.1 749 146.1 L749 300.0 Z"/>
+  <text class="val" x="732" y="134.1">.137</text>
+  <path class="s2" d="M751 300.0 L751 263.8 Q751 259.8 755 259.8 L781 259.8 Q785 259.8 785 263.8 L785 300.0 Z"/>
+  <text class="val" x="768" y="251.8">.035</text>
+  <path class="s1" d="M803 300.0 L803 146.0 Q803 142.0 807 142.0 L833 142.0 Q837 142.0 837 146.0 L837 300.0 Z"/>
+  <text class="val" x="820" y="134.0">.137</text>
+  <path class="s2" d="M839 300.0 L839 212.9 Q839 208.9 843 208.9 L869 208.9 Q873 208.9 873 212.9 L873 300.0 Z"/>
+  <text class="val" x="856" y="200.9">.079</text>
+
+  <line class="axis" x1="300" y1="300" x2="560" y2="300"/>
+  <line class="axis" x1="620" y1="300" x2="880" y2="300"/>
+
+  <text class="cat" x="389" y="318">default</text>
+  <text class="cat" x="471" y="318">this setup</text>
+  <text class="dlt" x="430" y="341">&#8722;47% tokens</text>
+  <text class="cat" x="430" y="358">exact agent telemetry, n=1/cell</text>
+
+  <text class="cat" x="662" y="318">Haiku</text>
+  <text class="cat" x="750" y="318">Sonnet</text>
+  <text class="cat" x="838" y="318">Opus</text>
+  <text class="dlt" x="662" y="341">&#8722;63%</text>
+  <text class="dlt" x="750" y="341">&#8722;75%</text>
+  <text class="dlt" x="838" y="341">&#8722;42%</text>
+  <text class="cat" x="750" y="358">30 reps per cell</text>
+
+  <text class="cat" x="28" y="384" style="text-anchor:start">Cost tile measured locally with `claude plugin details`. Both panels from the ponytail benchmark suite (headless Claude Code, pinned public repo, reproducible).</text>
+</svg>

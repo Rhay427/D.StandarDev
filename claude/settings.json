@@ -1,0 +1,46 @@
+{
+  "model": "opus",
+  "effortLevel": "high",
+  "theme": "auto",
+  "env": {
+    "SECURITY_REVIEW_MODEL": "claude-sonnet-4-6",
+    "PONYTAIL_SUBAGENT_MATCHER": "^(?!explore$|plan$).+$"
+  },
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    }
+  },
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "extraKnownMarketplaces": {
+    "pleaseai": {
+      "source": { "source": "git", "url": "https://github.com/pleaseai/claude-code-plugins.git" }
+    },
+    "ponytail": {
+      "source": { "source": "github", "repo": "dietrichgebert/ponytail" }
+    }
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "ponytail@ponytail": true,
+    "security-guidance@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "firecrawl@claude-plugins-official": true,
+    "supabase@claude-plugins-official": true,
+    "figma@claude-plugins-official": true,
+    "please-plugins@pleaseai": true,
+    "pnpm@pleaseai": true,
+    "vite@pleaseai": true,
+    "vitest@pleaseai": true,
+    "astro@pleaseai": true,
+    "playwright-cli@pleaseai": true,
+    "zod@pleaseai": true,
+    "tsdown@pleaseai": true
+  }
+}
