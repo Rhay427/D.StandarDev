@@ -1,0 +1,39 @@
+name: Proposed change
+description: A new skill, a plugin swap, or a change to the global rules.
+labels: [proposal]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is an opinionated personal setup — the skill and plugin set is small because every item
+        in it gets used daily. Additions need to earn their place, so say what they replace.
+        See CONTRIBUTING.md.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve
+      description: The situation where the current setup falls short. Be concrete.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you are proposing
+    validations:
+      required: true
+
+  - type: input
+    id: replaces
+    attributes:
+      label: What it replaces or removes
+      description: Required for a new skill or plugin. "Nothing" is a valid answer, but a harder sell.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you tried instead
+      description: Existing skills, plugins, or rules you tried first and why they did not cover it.

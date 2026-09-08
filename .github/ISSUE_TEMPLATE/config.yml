@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Bug in a plugin
+    url: https://github.com/anthropics/claude-plugins-official
+    about: No plugin source is vendored here. Report plugin bugs to that plugin's own repository — issues here should be about the plugin selection or the install flow.
+  - name: Security vulnerability
+    url: https://github.com/Rhay427/D.StandarDev/security/advisories/new
+    about: Report privately instead of opening a public issue. See SECURITY.md.
