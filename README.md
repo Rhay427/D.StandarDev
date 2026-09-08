@@ -310,12 +310,14 @@ between them; the bodies load only when a task actually matches.
 `frontend` is the one skill deep enough to split. Two files sit beside it and load only when the
 work actually calls for them — not on every frontend task:
 
-**`references/component-reuse.md`** — the search technique for finding a component worth reusing,
-and how to judge a candidate once you've found one. It also separates three things that are easy to
-conflate: a component *foundation* (shadcn/ui — used only when already installed or compatible), a
-component *inspiration source* (21st.dev, Kokonut UI — adapted, never auto-installed), and an
-*animation* library (Motion, Anime.js, Transition.dev). Pulled in when you're genuinely creating or
-evaluating a component, not as a checklist for every change.
+**`references/component-reuse.md`** — the decision hierarchy for reaching outside the project:
+existing component → installed dependency → native platform capability → approved reference → new
+dependency → custom build, in that order. Its job is separating four kinds of resource that are easy
+to conflate: a component *foundation* (shadcn/ui, only when already installed or compatible), a
+component *inspiration source* (21st.dev, Kokonut UI — adapted, never auto-installed), a *motion
+reference* (Motion.dev examples — consulting it doesn't imply installing Motion), and an *animation
+implementation* (Motion, Anime.js). Pulled in when you're genuinely choosing how to build a
+component, not as a checklist for every change.
 
 **`references/design-references.md`** — the design layer. Gated to new-site work, major redesigns,
 genuinely new UI with no established pattern, or an explicit request for design exploration, so
@@ -345,7 +347,8 @@ opening:
 | [bklit.com](https://bklit.com/) | Personality-driven product presentation over a sterile dashboard tone |
 | [boneyard.vercel.app](https://boneyard.vercel.app/) | Before/after visual storytelling — contrast explains instead of prose |
 | [efferd.com](https://efferd.com/) | Minimalist developer-first hierarchy |
-| [transition.dev](https://transition.dev/) | Transition and motion reference |
+| [motion.dev/examples](https://motion.dev/examples) | Transition and UI motion — page transitions, layout animation, micro-interactions, scroll and state changes |
+| [MDN: View Transition API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) | Native view transitions, preferred over an animation library where the platform suffices |
 
 The instructions attached to that table matter more than the table: **extract the principle, don't
 copy the layout**, treat shadcn as a foundation rather than a visual identity, and hand aesthetic

@@ -33,7 +33,8 @@ Existing project pattern?
 | [bklit.com](https://bklit.com/) | Personality-driven presentation | Technical rigor with a human voice, not a sterile dashboard tone. |
 | [boneyard.vercel.app](https://boneyard.vercel.app/) | Visual storytelling | Before/after contrast doing the explaining instead of prose. |
 | [efferd.com](https://efferd.com/) | Minimalist hierarchy | Developer-first — reach the point fast, no marketing build-up. |
-| [transition.dev](https://transition.dev/) | Motion reference | Transition patterns. Unreachable on last check (`ECONNREFUSED`) — verify before relying on it. |
+| [motion.dev/examples](https://motion.dev/examples) | Transition and UI motion | Primary reference for page transitions, layout animation, navigation, micro-interactions, scroll, and state changes. Extract the motion principle; don't add Motion as a dependency unless the project actually needs it. |
+| [MDN: View Transition API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) | Native View Transitions | Prefer this when CSS/browser APIs can satisfy the interaction without an animation library. |
 
 For aesthetic direction itself, `frontend-design` is the primary skill. These rows are pointers, not
 a substitute for it.
