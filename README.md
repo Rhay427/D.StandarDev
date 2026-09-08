@@ -30,7 +30,7 @@ and the same tooling on every project you open.
 > this as a starting point and swap the parts that do not fit.
 
 ```bash
-git clone https://github.com/<you>/D.StandarDev.git
+git clone https://github.com/Rhay427/D.StandarDev.git
 cd D.StandarDev
 ./install.sh
 ```
