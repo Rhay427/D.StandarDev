@@ -305,6 +305,30 @@ its domain.
 All five install in every profile, including `core`. They cost ~359 tokens of always-on context
 between them; the bodies load only when a task actually matches.
 
+### Progressive references
+
+`frontend` is the one skill deep enough to split. Two files sit beside it and load only when the
+work actually calls for them — not on every frontend task:
+
+**`references/component-reuse.md`** — the search technique for finding a component worth reusing,
+and how to judge a candidate once you've found one. Pulled in when you're genuinely creating or
+evaluating a UI component, not as a checklist for every change.
+
+**`references/design-references.md`** — a small curated set of sites, each with the *principle*
+extracted rather than the layout. Gated to new-site or major-redesign work only, so routine feature
+work never pays for it:
+
+| Site | Principle |
+|---|---|
+| [bklit.com](https://bklit.com/) | Approachable, personality-driven product presentation — technical rigor paired with a human voice, not a sterile dashboard tone. |
+| [boneyard.vercel.app](https://boneyard.vercel.app/) | Before/after visual storytelling — contrast does the explaining instead of prose. |
+| [efferd.com](https://efferd.com/) | Minimalist developer-first hierarchy — reach the point fast, no marketing build-up. |
+| [transition.dev](https://transition.dev/) | Transition and motion reference. |
+
+The instruction attached to that list matters more than the list: **extract the principle, don't
+copy the layout** — and for aesthetic direction itself, hand off to the `frontend-design` plugin
+rather than treating these rows as a substitute for it.
+
 ---
 
 ## Plugins
