@@ -329,14 +329,18 @@ between them; the bodies load only when a task actually matches.
 `frontend` is the one skill deep enough to split. Two files sit beside it and load only when the
 work actually calls for them — not on every frontend task:
 
-**`references/component-reuse.md`** — the decision hierarchy for reaching outside the project:
-existing component → installed dependency → native platform capability → approved reference → new
-dependency → custom build, in that order. Its job is separating four kinds of resource that are easy
-to conflate: a component *foundation* (shadcn/ui, only when already installed or compatible), a
-component *inspiration source* (21st.dev, Kokonut UI — adapted, never auto-installed), a *motion
-reference* (Motion.dev examples — consulting it doesn't imply installing Motion), and an *animation
-implementation* (Motion, Anime.js). Pulled in when you're genuinely choosing how to build a
-component, not as a checklist for every change.
+**`references/component-reuse.md`** — two halves, both about not writing a component you didn't
+need. *Find and evaluate*: search the feature directory, then the shared component location, then
+the repo — by UI purpose rather than exact name, since the thing you want may be called `Chip` or
+may be a styling helper rather than a component at all. Then read its props, check a couple of real
+usages, and see who else consumes it before you extend it, so "reuse" doesn't break three other
+screens. *Then the ladder* for when nothing fits: existing component → installed dependency → native
+platform capability → approved reference → new dependency → custom build, separating four resources
+that are easy to conflate — a component *foundation* (shadcn/ui, only when already installed or
+compatible), a component *inspiration source* (21st.dev, Kokonut UI — adapted, never
+auto-installed), a *motion reference* (Motion.dev examples — consulting it doesn't imply installing
+Motion), and an *animation implementation* (Motion, Anime.js). Pulled in when you're genuinely
+creating or evaluating a component, not as a checklist for every change.
 
 **`references/design-references.md`** — the design layer. Gated to new-site work, major redesigns,
 genuinely new UI with no established pattern, or an explicit request for design exploration, so
