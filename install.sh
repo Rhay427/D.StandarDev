@@ -45,10 +45,10 @@ say() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!!\033[0m %s\n' "$*"; }
 
 case "${PROFILE:-all}" in
-  core)   PLUGINS=("${CORE[@]}") ;;
-  web)    PLUGINS=("${CORE[@]}" "${WEB[@]}") ;;
-  data)   PLUGINS=("${CORE[@]}" "${DATA[@]}") ;;
-  all)    PLUGINS=("${CORE[@]}" "${WEB[@]}" "${DATA[@]}") ;;
+  core)   PLUGINS=("${CORE[@]}"); DESIGN_SKILLS=0 ;;
+  web)    PLUGINS=("${CORE[@]}" "${WEB[@]}"); DESIGN_SKILLS=1 ;;
+  data)   PLUGINS=("${CORE[@]}" "${DATA[@]}"); DESIGN_SKILLS=0 ;;
+  all)    PLUGINS=("${CORE[@]}" "${WEB[@]}" "${DATA[@]}"); DESIGN_SKILLS=1 ;;
   *) warn "unknown PROFILE '${PROFILE}' (use core|web|data|all)"; exit 1 ;;
 esac
 
@@ -87,6 +87,35 @@ if [ -f "$DEST/settings.json" ]; then
 else
   cp "$SRC/claude/settings.json" "$DEST/settings.json"
   say "settings.json installed"
+fi
+
+if [ "$DEST" != "$HOME/.claude" ]; then
+  warn "custom CLAUDE_HOME detected — external skills and plugins were not changed."
+  exit 0
+fi
+
+if [ "$DESIGN_SKILLS" = "1" ]; then
+  command -v npx >/dev/null || {
+    warn "npx not found. Install Node.js first: https://nodejs.org"
+    exit 1
+  }
+
+  if [ "${UPDATE:-0}" = "1" ]; then
+    say "updating design-taste-frontend..."
+    npx skills update design-taste-frontend --global --yes
+  else
+    say "installing design-taste-frontend..."
+    npx skills add https://github.com/Leonxlnx/taste-skill \
+      --skill design-taste-frontend --global --agent claude-code --yes
+  fi
+
+  if [ "${UPDATE:-0}" = "1" ] || [ -e "$DEST/skills/impeccable" ]; then
+    say "updating Impeccable (automatic hooks remain off)..."
+    npx impeccable update --global --no-hooks --yes
+  else
+    say "installing Impeccable (automatic hooks off)..."
+    npx impeccable install --global --providers=claude --no-hooks --yes
+  fi
 fi
 
 if [ "${SKIP_PLUGINS:-0}" = "1" ]; then

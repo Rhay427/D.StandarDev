@@ -31,11 +31,11 @@ Projects vary; use whichever of these (or a mix) is already established in the r
 
 Same reuse-before-adding logic, applied to libraries:
 
-1. **Existing project component / existing design system**
+1. **Existing project component / existing design system** — reuse it rather than replacing it with a native element.
 
-2. **Existing installed dependency**
+2. **Native platform capability** — prefer HTML/CSS/browser APIs when they satisfy the requirement, including the View Transitions API, CSS animations/transitions, scroll-driven animations, and native interaction behavior — even when an installed library could also do it.
 
-3. **Native platform capability** — prefer CSS/browser APIs when they satisfy the requirement, including the View Transitions API, CSS animations/transitions, scroll-driven animations, and native interaction behavior.
+3. **Existing installed dependency** — only when native can't satisfy the requirement.
 
 4. **Approved references, matched to the job.** These are different kinds of resources; don't conflate them:
 
@@ -54,5 +54,7 @@ Same reuse-before-adding logic, applied to libraries:
 6. **Custom implementation** — last resort, not the first move.
 
 Don't install anything just because it appears in this list.
+
+No design skill bypasses this hierarchy. A design system, component library, icon package, or animation package suggested by `design-taste-frontend`, `frontend-design`, or `impeccable` enters at step 5 as a new dependency and must be justified like any other.
 
 For picking a reference by the kind of design problem — UX flow, UI composition, component pattern, or visual direction — see `design-references.md`.

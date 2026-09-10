@@ -26,7 +26,7 @@ Decide which one applies before doing anything else — this is what keeps small
 
 **Full path** — a new component, a new feature area, or a change that spans multiple files/directories where the right pattern isn't obvious from the file alone. Look only at what's relevant to what you're actually adding:
 
-- Adding UI? Check two places, in order, and stop as soon as one has what you need: (1) the current feature/route directory itself — sibling files there often already render or style the same kind of thing (a status, a badge, a loading state), and (2) the project's shared/atomic component location. Only widen to a repo-wide search if neither has it. See `references/component-reuse.md` for the search technique and how to evaluate what you find. Skip all of this for anything that isn't about UI reuse (a hook extraction, a utility, a type, a constant — for those, just check the relevant hooks/utils/types/constants folder directly, no reference needed). If neither place has a close pattern to extend — this is new UI with no close existing pattern — invoke `frontend-design` for visual direction before implementing, rather than defaulting to a generic layout. For a new site, a major redesign, or explicit design exploration, `references/design-references.md` adds the routing (UX flow vs. composition vs. component) and the anti-generic rules — it is not for ordinary full-path work like a hook extraction or a straightforward reusable component.
+- Adding UI? Check two places, in order, and stop as soon as one has what you need: (1) the current feature/route directory itself — sibling files there often already render or style the same kind of thing (a status, a badge, a loading state), and (2) the project's shared/atomic component location. Only widen to a repo-wide search if neither has it. See `references/component-reuse.md` for the search technique and how to evaluate what you find. Skip all of this for anything that isn't about UI reuse (a hook extraction, a utility, a type, a constant — for those, just check the relevant hooks/utils/types/constants folder directly, no reference needed). If neither place has a close pattern to extend and the task is substantial new visual UI, see **Design Skills** below rather than defaulting to a generic layout. For a new site, a major redesign, or explicit design exploration, `references/design-references.md` adds project-context calibration and reference routing (UX flow vs. composition vs. component) — it is not for ordinary full-path work like a hook extraction or a straightforward reusable component.
 - Extracting or moving logic (e.g. a hook)? Check how sibling routes/features already structure that kind of file — one or two comparable examples, not every sibling.
 - Otherwise, implement the smallest set of files that satisfies the requirement.
 
@@ -71,6 +71,21 @@ This applies to CSS over JavaScript too: prefer a CSS solution to a JS one when 
 ## Component Reuse
 
 **Never create a new component as the first move.** Before writing one: search the current feature directory and the project's shared component location for something that can be reused as-is, reused via existing props, composed with other existing components, or safely extended — including a plain helper or utility function that already produces the styling or behavior you need, not just files that look like components. Only create new when nothing reasonably fits, and don't wrap an existing piece in a new component just to give it a name — extend it in place instead. See `references/component-reuse.md` for the search technique and how to evaluate a candidate — consult it when you're actually creating or evaluating a UI component, not as a general checklist for other kinds of full-path work.
+
+---
+
+## Design Skills
+
+Most tasks use none: not the fast path, not non-visual full-path work (hooks, state, routing, utils, types, constants, API/data handling), and not new UI that an existing project pattern already covers — reuse that instead. Don't classify the project for any of these.
+
+**New visual direction** — only when the task is substantial new visual UI *and* the project has no sufficiently clear visual pattern for it. Read the project context first (`references/design-references.md`), then invoke exactly **one** of these, never both:
+
+- `design-taste-frontend` — new sites, public-facing pages, portfolios, brand-led or expressive UI, substantial visual redesigns: where aesthetic direction is the main problem.
+- `frontend-design` — new application/product UI: dashboards, tables, data-heavy or operational screens, internal/admin tools, multi-step workflows: where structure and usability matter more than art direction.
+
+The project's existing visual system wins unless the task asks for a redesign. The design skill proposes direction; this skill still owns implementation, architecture, component reuse, dependencies, accessibility, framework conventions, and verification — its stack, icon, design-system, and animation defaults never override the project's.
+
+**Implemented UI** — `impeccable`, only for UI that already exists and only when the task asks for review or refinement: an audit, critique, final polish, design QA, pre-PR visual cleanup, or equivalent. Don't offer or run it on your own after a build or redesign — a design-skill task ends at implementation. Run the single narrowest command — `audit`, `critique`, `polish`, or `layout` / `typeset` / `quieter` / `distill` / `clarify` / `harden` / `adapt` for a named problem. Its other commands and its generic design flow run only on explicit request; it is a reviewer, not a UI-building authority.
 
 ---
 
