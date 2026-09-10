@@ -4,10 +4,10 @@
 
 # D.StandarDev
 
-**An opinionated, portable Claude Code setup — one script, one standard, every machine.**
+**An opinionated, portable AI-assisted development setup — one standard, every machine.**
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-setup-8A63D2)](https://claude.com/claude-code)
-[![Skills](https://img.shields.io/badge/skills-6-1f6feb)](#skills)
+[![Skills](https://img.shields.io/badge/authored%20skills-5-1f6feb)](#skills)
 [![Plugins](https://img.shields.io/badge/plugins-20-1f6feb)](#plugins)
 [![Tokens](https://img.shields.io/badge/agent%20tokens-%E2%88%9247%25-1baf7a)](#benchmark-default-vs-dstandardev)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -18,9 +18,9 @@
 
 ## What this is
 
-`D.StandarDev` is the whole Claude Code configuration I actually work with — global engineering
-rules, domain skills, and the plugin set — packaged so a fresh machine goes from *default Claude*
-to *my Claude* with a single command.
+`D.StandarDev` is the source of truth for the engineering rules and domain skills I use with AI
+coding agents. Claude Code is the fully reproducible target; Codex uses the same principles, with
+provider-specific runtime copies and the limitations documented below.
 
 It is not a prompt collection. It is a **standard**: the same guardrails, the same review discipline,
 and the same tooling on every project you open.
@@ -184,6 +184,8 @@ Read these before quoting the numbers.
 - **No benchmark measures rework.** The scope-control and verification rules in `CLAUDE.md`
   are there to prevent wasted turns. That should reduce tokens further; it is unmeasured, so
   it is claimed nowhere above.
+- **The benchmark predates the external design-routing skills.** Taste Skill and Impeccable are not
+  included in the measured context totals above.
 
 ---
 
@@ -228,7 +230,8 @@ D.StandarDev/
 │       ├── mobile/          # React Native, Expo, Flutter, iOS, Android
 │       ├── testing/         # unit, component, integration, E2E, build checks
 │       └── git/             # safe branch, diff, rebase, PR, release flow
-└── install.sh
+├── install.sh
+└── test-install.sh
 ```
 
 ---
@@ -237,40 +240,95 @@ D.StandarDev/
 
 - [Claude Code CLI](https://claude.com/claude-code) on your `PATH`
 - `git`
+- Node.js with `npx` for the `web` and `all` profiles
 - macOS or Linux (`bash`)
 
 ---
 
-## Install
+## Installation
 
 ```bash
+git clone https://github.com/Rhay427/D.StandarDev.git
+cd D.StandarDev
 ./install.sh
 ```
 
-The script backs up any existing `~/.claude/CLAUDE.md` and matching skills into
-`~/.claude/backups/standardev-<timestamp>/`, installs the rules and skills, adds `settings.json`
-only if you don't already have one, then registers the marketplaces and installs the plugins.
+The default `all` profile reproduces the complete Claude setup. It backs up and deploys the five
+D.StandarDev-authored skills from `claude/skills/`, leaves an existing `settings.json` untouched,
+installs the external design skills from their upstream sources, and installs the configured Claude
+plugins. Files under `~/.claude/` are runtime copies; edit the repository copies instead.
+
+For transparency, these are the external design commands used for a fresh Claude installation:
+
+```bash
+npx skills add https://github.com/Leonxlnx/taste-skill \
+  --skill design-taste-frontend --global --agent claude-code --yes
+npx impeccable install --global --providers=claude --no-hooks --yes
+claude plugin install frontend-design@claude-plugins-official
+```
+
+Only `design-taste-frontend` is selected from Taste Skill. Impeccable is installed with automatic
+hooks disabled. `frontend-design` remains an official Anthropic plugin rather than a vendored skill.
 
 Then restart Claude Code.
 
-### Updating
+## Updating D.StandarDev
 
-Re-running the installer *is* the update path — it's idempotent and backs up before it writes:
+For an existing installation:
 
 ```bash
 git pull
-./install.sh              # refresh rules, skills, marketplaces, plugins
-UPDATE=1 ./install.sh     # same, but pull newer plugin versions instead of re-installing
+UPDATE=1 ./install.sh
 ```
 
-A re-run replaces each skill directory outright, so a file deleted from the repo also disappears
-from `~/.claude` — and the copy it replaced still lands in `~/.claude/backups/standardev-<timestamp>/`.
-Skills you added yourself and aren't in this repo are left alone.
+This deploys the authored skills, updates the external design skills, refreshes Claude marketplaces
+and plugins, and preserves the hook-off policy. Restart Claude Code afterward.
 
-Your `settings.json` is never overwritten once it exists; if a release changes the defaults, the
-script says so and you merge by hand.
+`UPDATE=1 ./install.sh` already performs every external update below. The individual commands are
+selective manual alternatives for updating one dependency or retrying a failed step; they are not
+additional required steps.
 
-Restart Claude Code afterwards — plugin changes only take effect in a new session.
+### Update D.StandarDev-authored skills
+
+Running `./install.sh` or `UPDATE=1 ./install.sh` replaces only `frontend`, `backend`, `git`,
+`mobile`, and `testing` under `~/.claude/skills/`, after backing up the previous runtime copies.
+Other user-installed skills are left alone. The canonical files remain in this repository.
+
+### Update Taste Skill
+
+The Skills CLI supports a named global update, so the full Taste bundle is never selected:
+
+```bash
+npx skills update design-taste-frontend --global --yes
+```
+
+### Update Impeccable
+
+```bash
+npx impeccable update --global --no-hooks --yes
+```
+
+`--no-hooks` is required by this repository's policy. Do not replace it with an interactive update
+that could enable hooks.
+
+### Update frontend-design
+
+```bash
+claude plugin marketplace update
+claude plugin update -y frontend-design@claude-plugins-official
+```
+
+Use Claude's plugin updater; do not copy plugin files into this repository.
+
+Your `settings.json` is never overwritten once it exists. If repository defaults change, merge the
+desired keys manually.
+
+After updating, confirm Impeccable's hooks remain off and run the isolated installer smoke test:
+
+```bash
+~/.claude/skills/impeccable/scripts/impeccable hooks status
+./test-install.sh
+```
 
 ### Profiles — don't take the parts you won't use
 
@@ -279,7 +337,7 @@ that matches your work:
 
 ```bash
 PROFILE=core ./install.sh    # the discipline only
-PROFILE=web  ./install.sh    # + React/Vite/Astro/Figma/testing tooling
+PROFILE=web  ./install.sh    # + frontend/design skills and web tooling
 PROFILE=data ./install.sh    # + Supabase and web research
 ./install.sh                 # everything (default)
 ```
@@ -291,8 +349,9 @@ PROFILE=data ./install.sh    # + Supabase and web research
 | `data` | 11 | 6,578 tok | 0.66% | You work on Supabase/Postgres backends. |
 | `all` | 20 | 9,812 tok | 0.98% | You do all of it — this is what I run. |
 
-The skills and `CLAUDE.md` install in every profile; they're 1,827 of the tokens above and they
-are the part that does the work.
+The five authored skills and `CLAUDE.md` install in every profile. Taste Skill, Impeccable, and
+`frontend-design` install with `web` and `all`. The measured totals above predate the two external
+skills.
 
 **Start with `core`.** It's stack-neutral, it's under half a percent of your context window, and it
 contains every rule in "The idea" above. Add a tier when you miss something.
@@ -300,17 +359,27 @@ contains every rule in "The idea" above. Add a tier when you miss something.
 ### Other options
 
 ```bash
-SKIP_PLUGINS=1 ./install.sh        # rules and skills only, no plugins
-CLAUDE_HOME=/tmp/try ./install.sh  # dry-run into a throwaway directory
+SKIP_PLUGINS=1 ./install.sh        # skip Claude plugins; skills still install
+CLAUDE_HOME=/tmp/try ./install.sh  # authored files only; no global external changes
 ```
+
+### Codex support
+
+Codex can use the same authored skill concepts, but this installer does not overwrite the existing
+provider-adapted copies under `~/.agents/skills/`. On the machine where this repository is
+maintained, Codex currently resolves `frontend`, `design-taste-frontend`, `impeccable`, and
+`frontend-design`; the last one comes from an installed Codex plugin cache.
+
+That is an observed local state, not a fresh-install guarantee. D.StandarDev does not yet provide a
+verified reproducible Codex installation path for `frontend-design`, so Claude is currently the
+complete reproducible target. No substitute for `frontend-design` is implied.
 
 ---
 
 ## Skills
 
-Skills load automatically when a task matches their description — you don't invoke them by hand.
-Every one of them opens with the same trivial/non-trivial gate, then adds only what's specific to
-its domain.
+D.StandarDev authors and maintains five skills. They live in `claude/skills/`; installed copies are
+deployment targets, not separate sources to edit.
 
 | Skill | The rule that earns its place |
 |---|---|
@@ -319,71 +388,64 @@ its domain.
 | `mobile` | Asks which platform you mean before touching permissions, native modules, or lifecycle — instead of silently picking one. Branches only at the point of real divergence. Never claims both platforms were tested unless both ran. |
 | `testing` | A table mapping each layer to its *narrowest* useful test, with an explicit "escalate only when." E2E is the escalation, never the default. A bug fix ships the test that reproduces it. |
 | `git` | Nothing is staged, committed, pushed, or turned into a PR unless you ask. Destructive commands are shown and confirmed before running. PRs get a fixed Problem / Solution / Changes / What to test / What to run structure. |
-| `archify` *(optional)* | Architecture, sequence, data-flow, and state diagrams as standalone HTML. Third-party skill by `tt-a1i`, ~7 MB — install it separately into `~/.claude/skills/archify/` rather than vendoring it here. |
 
-All five install in every profile, including `core`. They cost ~359 tokens of always-on context
-between them; the bodies load only when a task actually matches.
+The visual workflow also integrates three external skills without vendoring them:
+
+| External skill | Role | Distribution |
+|---|---|---|
+| `design-taste-frontend` | Expressive, public-facing, brand, portfolio, and substantial redesign direction | Taste Skill upstream |
+| `impeccable` | Audit, critique, refinement, and polish for implemented UI | Impeccable upstream |
+| `frontend-design` | New application/product UI direction where no project pattern exists | Official Anthropic Claude plugin |
+
+`archify` remains an optional separately installed third-party skill for architecture and workflow
+diagrams.
 
 ### Progressive references
 
-`frontend` is the one skill deep enough to split. Two files sit beside it and load only when the
-work actually calls for them — not on every frontend task:
-
-**`references/component-reuse.md`** — two halves, both about not writing a component you didn't
-need. *Find and evaluate*: search the feature directory, then the shared component location, then
-the repo — by UI purpose rather than exact name, since the thing you want may be called `Chip` or
-may be a styling helper rather than a component at all. Then read its props, check a couple of real
-usages, and see who else consumes it before you extend it, so "reuse" doesn't break three other
-screens. *Then the ladder* for when nothing fits: existing component → installed dependency → native
-platform capability → approved reference → new dependency → custom build, separating four resources
-that are easy to conflate — a component *foundation* (shadcn/ui, only when already installed or
-compatible), a component *inspiration source* (21st.dev, Kokonut UI — adapted, never
-auto-installed), a *motion reference* (Motion.dev examples — consulting it doesn't imply installing
-Motion), and an *animation implementation* (Motion, Anime.js). Pulled in when you're genuinely
-creating or evaluating a component, not as a checklist for every change.
-
-**`references/design-references.md`** — the design layer. Gated to new-site work, major redesigns,
-genuinely new UI with no established pattern, or an explicit request for design exploration, so
-routine feature work never pays for it. Its first job is routing — consult *one* reference for the
-problem you actually have, not all of them:
+The frontend references load only for work that needs them. Component selection follows this order:
 
 ```
-Existing project pattern?
-  ├─ yes → reuse / adapt, stop here
-  └─ no → what's actually missing?
-       ├─ UX / workflow / flow   → Mobbin
-       ├─ page composition        → UIDatabase
-       ├─ a component             → existing dependency → shadcn/ui → 21st.dev
-       └─ visual direction        → frontend-design (primary), the sites below as pointers
+existing project component/design system
+→ native platform capability
+→ existing installed dependency
+→ approved reference
+→ new dependency
+→ custom implementation
 ```
 
-All of these are third-party resources, credited here and linked in the skill itself. None of their
-content is reproduced in this repo — what's stored is my one-line note on *why* each is worth
-opening:
+Native HTML, CSS, and browser APIs—including View Transitions where appropriate—come before another
+dependency. References are consulted for a specific unresolved problem, not swept as a checklist.
 
 | Reference | Role in the skill |
 |---|---|
-| [Mobbin](https://mobbin.com/) | Production UX patterns — flows, forms, settings, navigation, dashboards, mobile behavior |
-| [UIDatabase](https://uidatabase.co/) | UI composition — arrangement, hierarchy, spacing, data presentation |
-| [shadcn/ui](https://ui.shadcn.com/) | Component foundation, only where already present or compatible |
+| [Mobbin](https://mobbin.com/) | Production UX and workflow patterns |
+| [UIDatabase](https://uidatabase.co/) | Composition, hierarchy, spacing, and data presentation |
 | [21st.dev](https://21st.dev/) | Specialized component and interaction reference |
-| [bklit.com](https://bklit.com/) | Personality-driven product presentation over a sterile dashboard tone |
-| [boneyard.vercel.app](https://boneyard.vercel.app/) | Before/after visual storytelling — contrast explains instead of prose |
-| [efferd.com](https://efferd.com/) | Minimalist developer-first hierarchy |
-| [motion.dev/examples](https://motion.dev/examples) | Transition and UI motion — page transitions, layout animation, micro-interactions, scroll and state changes |
-| [MDN: View Transition API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) | Native view transitions, preferred over an animation library where the platform suffices |
+| [Kokonut UI](https://kokonutui.com/) | Component and pattern inspiration |
+| [Motion.dev](https://motion.dev/examples) | Motion and transition reference |
+| [bklit](https://bklit.com/) | Personality-driven presentation |
+| [boneyard](https://boneyard.vercel.app/) | Before/after visual storytelling |
+| [efferd](https://efferd.com/) | Minimalist, developer-first hierarchy |
 
-The instructions attached to that table matter more than the table: **extract the principle, don't
-copy the layout**, treat shadcn as a foundation rather than a visual identity, and hand aesthetic
-direction to the `frontend-design` plugin rather than treating these rows as a substitute for it.
+Extract the principle; do not copy layouts or install a dependency merely because it appears here.
 
-The same file carries the anti-generic rules — the defaults that make AI-generated UI recognizable
-(a card around every section, cards inside cards, gradients, decorative blobs, three-column feature
-grids, an icon beside every label, unadapted shadcn styling) and the instruction to build hierarchy
-from typography, spacing, alignment, grouping, and contrast *before* reaching for cards and shadows.
-"Modern" is defined there as deliberate, clear, readable, and context-appropriate — not futuristic
-or flashy by default. A short contextual rule covers government and institutional work, where the
-target is modern government > enterprise application > SaaS startup > experimental interface.
+## Frontend Design Workflow
+
+```text
+Existing project pattern                         → reuse or adapt it
+Small maintenance change                         → frontend only
+New expressive/public/brand/portfolio direction  → design-taste-frontend
+New application/product UI without a precedent   → frontend-design
+Implemented UI review or refinement              → impeccable
+```
+
+Choose exactly one visual-direction skill: Taste and `frontend-design` never establish direction
+for the same task. Impeccable is downstream review/refinement and does not run automatically after
+frontend work; its automatic hooks are disabled by default.
+
+The project's existing design system and identity win unless the task explicitly requests a
+redesign. Personal, portfolio, product, internal, institutional/government, and marketing work are
+context modes—not a permanent global style.
 
 ---
 
@@ -420,7 +482,7 @@ claude plugin marketplace add dietrichgebert/ponytail
 
 | Plugin | Marketplace | What it gives you |
 |---|---|---|
-| `frontend-design` | claude-plugins-official | Deliberate visual design instead of templated defaults |
+| `frontend-design` | claude-plugins-official | Application/product UI direction where no project precedent exists |
 | `figma` | claude-plugins-official | Design-to-code, Code Connect, diagram and library generation |
 | `astro` | pleaseai | Astro framework guidance |
 | `vite` | pleaseai | Vite config, plugin API, SSR, Rolldown migration |
@@ -460,7 +522,40 @@ If `~/.claude/settings.json` already exists, the installer leaves it alone — m
 
 ---
 
-## Uninstall
+## Verification
+
+After installing or updating, restart Claude Code and open `/skills`. Confirm these entries are
+available:
+
+```text
+frontend
+design-taste-frontend
+impeccable
+frontend-design
+```
+
+The CLI can verify the official plugin and the current project's Impeccable hook state:
+
+```bash
+claude plugin details frontend-design@claude-plugins-official
+~/.claude/skills/impeccable/scripts/impeccable hooks status
+```
+
+The hook status must be off. As a final smoke test, make an ordinary frontend edit in a disposable
+project and confirm no automatic Impeccable output appears. Repository maintainers can also run the
+isolated installer check:
+
+```bash
+./test-install.sh
+```
+
+For Codex, `install.sh` currently deploys no runtime files. Use Codex's `/skills` view to inspect
+what the current machine resolves, but treat that as observed local state—not proof that
+D.StandarDev reproduced it.
+
+---
+
+## Uninstall authored files
 
 ```bash
 rm ~/.claude/CLAUDE.md
@@ -477,17 +572,44 @@ claude plugin uninstall <plugin>@<marketplace>
 
 ---
 
-## Credits
+## Credits & References
 
-This repo is a configuration, so most of its value comes from work other people did. What is mine
-is the global `CLAUDE.md`, the five skills in `claude/skills/`, the installer, the benchmark
-chart, and the choice and tiering of the plugin set. Everything below is someone else's:
+D.StandarDev maintains the global `CLAUDE.md`, the five skills in `claude/skills/`, the installer
+and its smoke test, the documentation and benchmark chart, and the selection and routing of the
+external tools below. External skills and plugins remain the work and property of their upstream
+authors.
+
+### External agent/design skills
+
+| Project | Upstream authorship | Role here | License |
+|---|---|---|---|
+| [Taste Skill](https://github.com/Leonxlnx/taste-skill) (`design-taste-frontend` only) | Leonxlnx | Expressive, public-facing visual direction | [MIT](https://github.com/Leonxlnx/taste-skill/blob/main/LICENSE) |
+| [Impeccable](https://github.com/pbakaus/impeccable) | Paul Bakaus | Review and refinement of implemented UI | [Apache-2.0](https://github.com/pbakaus/impeccable/blob/main/LICENSE) |
+| [`frontend-design`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design) | Anthropic; Prithvi Rajasekaran and Alexander Bricken | Application/product UI direction | [Apache-2.0](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/frontend-design/LICENSE) |
+
+### UI/UX reference sources
+
+These sites are links for focused research. D.StandarDev does not copy their layouts, assets,
+components, or content.
+
+| Source | What it is used to study |
+|---|---|
+| [Mobbin](https://mobbin.com/) | Production UX and workflow patterns |
+| [UIDatabase](https://uidatabase.co/) | Composition, hierarchy, spacing, and data presentation |
+| [21st.dev](https://21st.dev/) | Specialized components and interactions |
+| [Kokonut UI](https://kokonutui.com/) | Component and pattern inspiration |
+| [Motion.dev](https://motion.dev/examples) | Motion and transition patterns |
+| [bklit](https://bklit.com/) | Personality-driven presentation |
+| [boneyard](https://boneyard.vercel.app/) | Before/after visual storytelling |
+| [efferd](https://efferd.com/) | Minimalist, developer-first hierarchy |
+
+### Other acknowledgements
 
 | What | By | License |
 |---|---|---|
 | Benchmark data (agent tokens, cost per 5 tasks, LOC-per-ticket) | [ponytail](https://github.com/DietrichGebert/ponytail) — Dietrich Gebert | MIT |
 | `ponytail`, and the lazy-code discipline it enforces | Dietrich Gebert | MIT |
-| `superpowers`, `code-review`, `code-simplifier`, `security-guidance`, `context7`, `frontend-design`, `skill-creator`, `github`, `firecrawl`, `supabase`, `figma` | Anthropic — [claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | see each plugin |
+| `superpowers`, `code-review`, `code-simplifier`, `security-guidance`, `context7`, `skill-creator`, `github`, `firecrawl`, `supabase`, `figma` | Anthropic — [claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | see each plugin |
 | `please-plugins`, `pnpm`, `vite`, `vitest`, `astro`, `playwright-cli`, `zod`, `tsdown` | [pleaseai](https://github.com/pleaseai/claude-code-plugins) | see each plugin |
 | `archify` (referenced, not vendored) | `tt-a1i` | MIT |
 | Header illustration (`assets/standardev.png`) | Generated with ChatGPT (OpenAI), prompted by the repo author | see note below |
@@ -498,12 +620,14 @@ for commissioned or licensed artwork. If you fork this repo, check OpenAI's curr
 generated images before reusing it commercially, and swap in your own if you would rather not
 depend on that.
 
-No plugin source is vendored in this repository — `install.sh` fetches each one from its own
-marketplace, so every author ships and licenses their own code.
+No external skill, plugin source, or reference-site content is vendored in this repository. Each
+upstream author distributes and licenses their own work. Names and links are used for attribution
+and interoperability; they do not imply sponsorship, endorsement, or partnership.
 
 ---
 
 ## License
 
-[MIT](LICENSE) — covers the files in this repository: `CLAUDE.md`, the skills, the installer, and
-the documentation. It does not cover the plugins, which carry their own licenses.
+[MIT](LICENSE) — covers D.StandarDev-authored files in this repository. It does not relicense
+external skills, plugins, reference-site content, names, or trademarks; those remain subject to
+their upstream terms.

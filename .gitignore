@@ -5,3 +5,14 @@
 .env*
 *.local.json
 .mcp.json
+
+# Generated external-skill/provider runtime files
+/.agents/skills/design-taste-frontend/
+/.agents/skills/impeccable/
+/.claude/skills/design-taste-frontend
+/.claude/skills/impeccable/
+/.claude/agents/impeccable-*.md
+/.codex/agents/impeccable-*.toml
+/.github/agents/impeccable-*.agent.md
+/.github/skills/impeccable/
+/skills-lock.json
