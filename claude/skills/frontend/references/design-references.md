@@ -27,23 +27,18 @@ it, stopping as soon as it's clear:
 
 The project's existing visual system wins unless the task asks for a redesign — a design skill's
 stronger opinions don't override a mature local system. Never carry one project's identity into
-another. Project-specific rules (brand, tokens, institutional identity) live in that project's own
+another. Project-specific rules (brand, tokens, identity) live in that project's own
 `CLAUDE.md` / `DESIGN.md` / tokens / existing components, not in this skill.
 
 **Calibration modes** — lightweight calibration, not themes. Pick the one the evidence supports and
 pass it to the design skill.
 
-- **Government / institutional** — only when the project actually is government, civic, regulatory,
-  or institutional, or asks for that character. Favor credibility, clarity, accessibility,
-  predictable interaction, sensible density, a restrained identity, and maintainability. Official
-  project/institution branding may inform identity when that context is established; don't copy
-  dated public-site layouts or import GOV.UK, USWDS, or another government's identity.
 - **Product / application** — SaaS, dashboards, admin, internal tools, data-heavy UI. Favor efficient
   workflows, clear hierarchy, discoverability, sensible density, and predictable interaction. Don't
   turn operational screens into marketing pages.
 - **Personal / portfolio / creative** — allow personality, expressive typography, unusual
   composition, tasteful motion, and experimentation, while staying usable, accessible, responsive,
-  and coherent. No institutional restraint unless asked.
+  and coherent. No corporate restraint unless asked.
 - **Marketing / brand / public-facing** — allow stronger storytelling, art direction, typography,
   motion, and brand expression, without generic AI landing-page formulas.
 - **Neutral / unknown** — preserve the existing UI, use restrained professional defaults, and don't
