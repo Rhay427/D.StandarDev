@@ -444,8 +444,8 @@ for the same task. Impeccable is downstream review/refinement and does not run a
 frontend work; its automatic hooks are disabled by default.
 
 The project's existing design system and identity win unless the task explicitly requests a
-redesign. Personal, portfolio, product, internal, institutional/government, and marketing work are
-context modes—not a permanent global style.
+redesign. Personal, portfolio, product, internal, and marketing work are context modes—not a
+permanent global style.
 
 ---
 
