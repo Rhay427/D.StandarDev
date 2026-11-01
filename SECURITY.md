@@ -2,8 +2,8 @@
 
 ## Scope
 
-This repository ships an installer (`install.sh`) that writes to `~/.claude`, replaces global
-configuration, and installs plugins from external marketplaces. That is the surface worth reporting
+This repository ships an installer (`install.sh`) that writes to `~/.claude`, `~/.codex`, and
+`~/.agents/skills`, replaces global configuration, and installs plugins from external marketplaces. That is the surface worth reporting
 on. In scope:
 
 - Anything in `install.sh` that could overwrite, delete, or exfiltrate files outside its intended

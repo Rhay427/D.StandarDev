@@ -29,6 +29,7 @@ run_installer() {
   env \
     HOME="$TEST_HOME" \
     CLAUDE_HOME="$TEST_HOME/.claude" \
+    CODEX_HOME="$TEST_HOME/.codex" \
     PATH="$TEST_BIN:$PATH" \
     FAKE_COMMAND_LOG="$COMMAND_LOG" \
     "$@" \
@@ -52,6 +53,8 @@ test -f "$TEST_HOME/.claude/settings.json"
 assert_logged 'npx skills add https://github.com/Leonxlnx/taste-skill --skill design-taste-frontend --global --agent claude-code --yes'
 assert_logged 'npx impeccable install --global --providers=claude --no-hooks --yes'
 test ! -e "$TEST_HOME/.claude/settings.local.json"
+test ! -e "$TEST_HOME/.agents"
+test ! -e "$TEST_HOME/.codex"
 
 : > "$COMMAND_LOG"
 run_installer env UPDATE=1
@@ -62,10 +65,29 @@ assert_logged 'claude plugin marketplace update'
 assert_logged 'claude plugin update -y frontend-design@claude-plugins-official'
 
 : > "$COMMAND_LOG"
+TEST_HOME="$TEST_ROOT/codex-home"
+mkdir -p "$TEST_HOME/.codex" "$TEST_HOME/.agents/skills/frontend"
+printf 'old rules\n' > "$TEST_HOME/.codex/AGENTS.md"
+touch "$TEST_HOME/.agents/skills/frontend/stale.md"
+run_installer
+
+for skill in frontend backend git mobile testing; do
+  diff -r "$ROOT/claude/skills/$skill" "$TEST_HOME/.agents/skills/$skill"
+done
+test "$(head -n 1 "$TEST_HOME/.codex/AGENTS.md")" = '# Global Codex Instructions'
+grep -Fqx '## Using Skills' "$TEST_HOME/.codex/AGENTS.md"
+grep -Fqx 'old rules' "$TEST_HOME"/.codex/backups/standardev-*/AGENTS.md
+test -f "$(echo "$TEST_HOME"/.codex/backups/standardev-*/frontend/stale.md)"
+assert_logged 'npx skills add https://github.com/Leonxlnx/taste-skill --skill design-taste-frontend --global --agent claude-code codex --yes'
+assert_logged 'npx impeccable install --global --providers=claude,codex --no-hooks --yes'
+
+: > "$COMMAND_LOG"
+rm -rf "$TEST_HOME/.agents"
 CUSTOM_CLAUDE_HOME="$TEST_ROOT/custom-claude"
 env \
   HOME="$TEST_HOME" \
   CLAUDE_HOME="$CUSTOM_CLAUDE_HOME" \
+  CODEX_HOME="$TEST_HOME/.codex" \
   PATH="$TEST_BIN:$PATH" \
   FAKE_COMMAND_LOG="$COMMAND_LOG" \
   UPDATE=1 \
@@ -74,5 +96,6 @@ env \
 test -f "$CUSTOM_CLAUDE_HOME/CLAUDE.md"
 test -f "$CUSTOM_CLAUDE_HOME/skills/frontend/SKILL.md"
 test ! -s "$COMMAND_LOG"
+test ! -e "$TEST_HOME/.agents"
 
 printf 'install smoke test passed\n'

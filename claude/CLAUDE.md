@@ -1,5 +1,24 @@
 # Global Claude Code Instructions
 
+## Using Skills
+
+Skills are required reading, not optional. Before starting any task — before planning, exploring code, or asking clarifying questions — check the available skills and load every one that matches the task:
+
+- UI, browser, or web client work → `frontend`
+- API, server, database, or auth work → `backend`
+- React Native, Expo, Flutter, iOS, or Android work → `mobile`
+- Writing, running, or debugging tests, or verifying a change → `testing`
+- Branches, commits, pull requests, or releases → `git`
+- Anything else → match the task against every available skill's description, including plugin skills
+
+A task can need several skills: a full-stack change needs `frontend`, `backend`, and `testing`.
+
+Follow each loaded skill. Read its current version; do not rely on memory of it. A task being small or familiar is not a reason to skip a matching skill.
+
+Do not load skills that do not match the task. Skip a matching skill only when the user says to.
+
+State which skills you loaded in one line before starting work.
+
 ## Core Development Philosophy
 
 - Prioritize correctness, security, maintainability, and simplicity.

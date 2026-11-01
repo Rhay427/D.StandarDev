@@ -5,7 +5,7 @@ description: Backend and API development for REST APIs, HTTP services, server-si
 
 # Backend and API Development Skill
 
-Backend-specific rules for REST APIs, server logic, databases, and integrations. Global CLAUDE.md already covers general development philosophy, security baselines, and communication — this skill only adds backend-specific judgment.
+Backend-specific rules for REST APIs, server logic, databases, and integrations. Global CLAUDE.md/AGENTS.md already covers general development philosophy, security baselines, and communication — this skill only adds backend-specific judgment.
 
 ## Before Making Changes
 
@@ -43,7 +43,7 @@ Prefer the project's existing architecture over generic backend patterns. Before
 
 ## Error Handling
 
-Follow the project's existing error/exception pattern. Never expose stack traces, raw SQL errors, or other internal details to clients — but keep client-facing messages informative enough to be actionable. Secret-handling in logs follows global CLAUDE.md.
+Follow the project's existing error/exception pattern. Never expose stack traces, raw SQL errors, or other internal details to clients — but keep client-facing messages informative enough to be actionable. Secret-handling in logs follows global CLAUDE.md/AGENTS.md.
 
 ## Performance
 

@@ -16,7 +16,7 @@ Make the smallest correct change while respecting the project's existing mobile 
 - Don't introduce a second navigation, state, or native-module library when one is already established.
 - Don't add native dependencies, permissions, or build config changes without checking what's already declared.
 
-General reuse, smallest-change, and no-unrelated-refactor rules are already covered by CLAUDE.md — this skill only adds what's specific to mobile.
+General reuse, smallest-change, and no-unrelated-refactor rules are already covered by CLAUDE.md/AGENTS.md — this skill only adds what's specific to mobile.
 
 ---
 
