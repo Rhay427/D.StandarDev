@@ -7,6 +7,7 @@
 **An opinionated, portable AI-assisted development setup — one standard, every machine.**
 
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-setup-8A63D2)](https://claude.com/claude-code)
+[![Codex](https://img.shields.io/badge/Codex-setup-10A37F)](https://github.com/openai/codex)
 [![Skills](https://img.shields.io/badge/authored%20skills-5-1f6feb)](#skills)
 [![Plugins](https://img.shields.io/badge/plugins-20-1f6feb)](#plugins)
 [![Tokens](https://img.shields.io/badge/agent%20tokens-%E2%88%9247%25-1baf7a)](#benchmark-default-vs-dstandardev)
@@ -19,8 +20,8 @@
 ## What this is
 
 `D.StandarDev` is the source of truth for the engineering rules and domain skills I use with AI
-coding agents. Claude Code is the fully reproducible target; Codex uses the same principles, with
-provider-specific runtime copies and the limitations documented below.
+coding agents. Claude Code and Codex install the same rules and skills from this repository, with
+the Codex limitations documented below.
 
 It is not a prompt collection. It is a **standard**: the same guardrails, the same review discipline,
 and the same tooling on every project you open.
@@ -177,8 +178,9 @@ Read these before quoting the numbers.
   (30 reps). The direction is consistent across both; the exact percentage is not precise.
 - **The win is Claude-specific.** ponytail's maintainers measured the same ruleset costing *more*
   on OpenAI's reasoning models (gpt-5.5: +38.7%) — the rules ride along as input on every
-  request, and those models were not verbose to begin with, so there is little to trim. This
-  standard targets Claude Code and makes no cross-provider claim.
+  request, and those models were not verbose to begin with, so there is little to trim. Codex
+  gets the same rules and skills for consistency, but every number on this page is Claude-only
+  and makes no cross-provider claim.
 - **Overhead is mostly cached.** The 9,812 tokens sit in the cached prefix of a session, so
   the billed cost is well below the raw count — which makes the break-even above conservative.
 - **No benchmark measures rework.** The scope-control and verification rules in `CLAUDE.md`
@@ -238,7 +240,9 @@ D.StandarDev/
 
 ## Requirements
 
-- [Claude Code CLI](https://claude.com/claude-code) on your `PATH`
+- [Claude Code CLI](https://claude.com/claude-code) on your `PATH` (the installer requires it)
+- [Codex](https://github.com/openai/codex), optional: run it once so `~/.codex` exists, and the
+  installer sets it up too
 - `git`
 - Node.js with `npx` for the `web` and `all` profiles
 - macOS or Linux (`bash`)
@@ -253,12 +257,15 @@ cd D.StandarDev
 ./install.sh
 ```
 
-The default `all` profile reproduces the complete Claude setup. It backs up and deploys the five
+The default `all` profile reproduces the complete Claude setup and, when `~/.codex` exists, the
+Codex setup described in [Codex support](#codex-support). It backs up and deploys the five
 D.StandarDev-authored skills from `claude/skills/`, leaves an existing `settings.json` untouched,
 installs the external design skills from their upstream sources, and installs the configured Claude
 plugins. Files under `~/.claude/` are runtime copies; edit the repository copies instead.
 
-For transparency, these are the external design commands used for a fresh Claude installation:
+For transparency, these are the external design commands used for a fresh Claude installation. When
+`~/.codex` exists, the installer adds `codex` to the `--agent` list and uses
+`--providers=claude,codex`:
 
 ```bash
 npx skills add https://github.com/Leonxlnx/taste-skill \
@@ -270,7 +277,7 @@ claude plugin install frontend-design@claude-plugins-official
 Only `design-taste-frontend` is selected from Taste Skill. Impeccable is installed with automatic
 hooks disabled. `frontend-design` remains an official Anthropic plugin rather than a vendored skill.
 
-Then restart Claude Code.
+Then restart Claude Code and Codex.
 
 ## Updating D.StandarDev
 
@@ -282,7 +289,7 @@ UPDATE=1 ./install.sh
 ```
 
 This deploys the authored skills, updates the external design skills, refreshes Claude marketplaces
-and plugins, and preserves the hook-off policy. Restart Claude Code afterward.
+and plugins, and preserves the hook-off policy. Restart Claude Code and Codex afterward.
 
 `UPDATE=1 ./install.sh` already performs every external update below. The individual commands are
 selective manual alternatives for updating one dependency or retrying a failed step; they are not
@@ -291,7 +298,8 @@ additional required steps.
 ### Update D.StandarDev-authored skills
 
 Running `./install.sh` or `UPDATE=1 ./install.sh` replaces only `frontend`, `backend`, `git`,
-`mobile`, and `testing` under `~/.claude/skills/`, after backing up the previous runtime copies.
+`mobile`, and `testing` under `~/.claude/skills/` and, when `~/.codex` exists,
+`~/.agents/skills/`, after backing up the previous runtime copies.
 Other user-installed skills are left alone. The canonical files remain in this repository.
 
 ### Update Taste Skill
@@ -365,14 +373,20 @@ CLAUDE_HOME=/tmp/try ./install.sh  # authored files only; no global external cha
 
 ### Codex support
 
-Codex can use the same authored skill concepts, but this installer does not overwrite the existing
-provider-adapted copies under `~/.agents/skills/`. On the machine where this repository is
-maintained, Codex currently resolves `frontend`, `design-taste-frontend`, `impeccable`, and
-`frontend-design`; the last one comes from an installed Codex plugin cache.
+When `~/.codex` exists, `install.sh` also sets up Codex from the same source files:
 
-That is an observed local state, not a fresh-install guarantee. D.StandarDev does not yet provide a
-verified reproducible Codex installation path for `frontend-design`, so Claude is currently the
-complete reproducible target. No substitute for `frontend-design` is implied.
+| Claude Code | Codex | Source |
+|---|---|---|
+| `~/.claude/CLAUDE.md` | `~/.codex/AGENTS.md` | `claude/CLAUDE.md`, with the Codex title |
+| `~/.claude/skills/<skill>` | `~/.agents/skills/<skill>` | `claude/skills/<skill>` |
+
+Taste Skill and Impeccable are installed for both agents too. Previous Codex copies are backed up to
+`~/.codex/backups/`. `CODEX_HOME` overrides the `~/.codex` location, and a custom `CLAUDE_HOME`
+leaves Codex untouched.
+
+Claude plugins do not transfer. D.StandarDev does not yet provide a verified reproducible Codex
+installation path for `frontend-design`, so the `frontend` skill's reference to it works in Codex
+only if a Codex plugin provides it. No substitute is implied.
 
 ---
 
@@ -549,9 +563,8 @@ isolated installer check:
 ./test-install.sh
 ```
 
-For Codex, `install.sh` currently deploys no runtime files. Use Codex's `/skills` view to inspect
-what the current machine resolves, but treat that as observed local state—not proof that
-D.StandarDev reproduced it.
+For Codex, restart it and use the `/skills` view to confirm that the authored skills resolve from
+`~/.agents/skills/`.
 
 ---
 
@@ -560,6 +573,9 @@ D.StandarDev reproduced it.
 ```bash
 rm ~/.claude/CLAUDE.md
 rm -rf ~/.claude/skills/{frontend,backend,mobile,testing,git}
+# Codex, if installed:
+rm ~/.codex/AGENTS.md
+rm -rf ~/.agents/skills/{frontend,backend,mobile,testing,git}
 # restore a backup if you had one:
 cp -R ~/.claude/backups/standardev-<timestamp>/* ~/.claude/
 ```

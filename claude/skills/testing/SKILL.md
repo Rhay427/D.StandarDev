@@ -5,7 +5,7 @@ description: Testing and verification for frontend, backend, API, mobile, integr
 
 # Testing Skill
 
-Testing-specific judgment on top of CLAUDE.md's general verification rules — covers backend/API, frontend/web, and mobile test creation, execution, and regression coverage. The goal is meaningful confidence in a change, not maximum test count.
+Testing-specific judgment on top of CLAUDE.md/AGENTS.md's general verification rules — covers backend/API, frontend/web, and mobile test creation, execution, and regression coverage. The goal is meaningful confidence in a change, not maximum test count.
 
 ---
 

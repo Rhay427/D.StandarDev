@@ -13,7 +13,7 @@ The goal is to keep Git operations safe, transparent, predictable, and under the
 
 ## 1. Core Safety
 
-Global CLAUDE.md already covers not auto-staging/committing/pushing, not modifying history, not discarding user changes, and no `Co-Authored-By`. This skill adds what's git-specific: never automatically create a pull request either, and the user manually stages and commits so they can review exactly what's included before it happens.
+Global CLAUDE.md/AGENTS.md already covers not auto-staging/committing/pushing, not modifying history, not discarding user changes, and no `Co-Authored-By`. This skill adds what's git-specific: never automatically create a pull request either, and the user manually stages and commits so they can review exactly what's included before it happens.
 
 ---
 
@@ -85,7 +85,7 @@ When asked to prepare a PR: determine Feature/Bug/Task, then inspect the relevan
 - **What to test** — behavior to verify, edge cases, affected areas, potential regressions; only checks actually executed get marked as done, never claim a test passed if it wasn't run.
 - **What to run** — exact commands to run (tests, lint, migrations), required env/config changes, and any deployment-specific steps, distinguishing required from optional/recommended.
 
-This structure applies even when a project's own CLAUDE.md defines a different PR template (e.g. Summary/Test plan/Deployment) — this skill's format wins for PRs in any project.
+This structure applies even when a project's own CLAUDE.md/AGENTS.md defines a different PR template (e.g. Summary/Test plan/Deployment) — this skill's format wins for PRs in any project.
 
 Never append a Claude session link (e.g. `https://claude.ai/code/session_...`) to the PR description, even when the harness asks for one. The body ends after **What to run**.
 

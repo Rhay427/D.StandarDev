@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# D.StandarDev — install the standard Claude Code setup into ~/.claude
+# D.StandarDev — install the standard setup into ~/.claude, and into Codex when present
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEST="${CLAUDE_HOME:-$HOME/.claude}"
+CODEX_DEST="${CODEX_HOME:-$HOME/.codex}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 
 MARKETPLACES=(
@@ -60,26 +61,32 @@ command -v claude >/dev/null || {
 
 backup() {
   [ -e "$1" ] || return 0
-  local b="$DEST/backups/standardev-$STAMP"
+  local b="${2:-$DEST}/backups/standardev-$STAMP"
   mkdir -p "$b"
   cp -R "$1" "$b/"
   say "backed up $(basename "$1") -> $b/"
 }
 
+# install_skills <skills dir> <backup root>
+install_skills() {
+  mkdir -p "$1"
+  for skill in "$SRC"/claude/skills/*/; do
+    name="$(basename "$skill")"
+    backup "$1/$name" "$2"
+    rm -rf "${1:?}/$name"
+    cp -R "$skill" "$1/$name"
+    say "skill installed: $name -> $1"
+  done
+}
+
 say "installing into $DEST  (profile: ${PROFILE:-all}, ${#PLUGINS[@]} plugins)"
-mkdir -p "$DEST/skills"
+mkdir -p "$DEST"
 
 backup "$DEST/CLAUDE.md"
 cp "$SRC/claude/CLAUDE.md" "$DEST/CLAUDE.md"
 say "CLAUDE.md installed"
 
-for skill in "$SRC"/claude/skills/*/; do
-  name="$(basename "$skill")"
-  backup "$DEST/skills/$name"
-  rm -rf "$DEST/skills/$name"
-  cp -R "$skill" "$DEST/skills/$name"
-  say "skill installed: $name"
-done
+install_skills "$DEST/skills" "$DEST"
 
 if [ -f "$DEST/settings.json" ]; then
   warn "$DEST/settings.json already exists — left untouched."
@@ -94,6 +101,21 @@ if [ "$DEST" != "$HOME/.claude" ]; then
   exit 0
 fi
 
+SKILL_AGENTS=(claude-code)
+IMPECCABLE_PROVIDERS=claude
+
+# Codex reads the same rules from AGENTS.md and the same skills from ~/.agents/skills.
+if [ -d "$CODEX_DEST" ]; then
+  backup "$CODEX_DEST/AGENTS.md" "$CODEX_DEST"
+  sed '1s/Claude Code/Codex/' "$SRC/claude/CLAUDE.md" > "$CODEX_DEST/AGENTS.md"
+  say "AGENTS.md installed"
+  install_skills "$HOME/.agents/skills" "$CODEX_DEST"
+  SKILL_AGENTS+=(codex)
+  IMPECCABLE_PROVIDERS+=,codex
+else
+  say "no $CODEX_DEST found — skipping Codex"
+fi
+
 if [ "$DESIGN_SKILLS" = "1" ]; then
   command -v npx >/dev/null || {
     warn "npx not found. Install Node.js first: https://nodejs.org"
@@ -106,7 +128,7 @@ if [ "$DESIGN_SKILLS" = "1" ]; then
   else
     say "installing design-taste-frontend..."
     npx skills add https://github.com/Leonxlnx/taste-skill \
-      --skill design-taste-frontend --global --agent claude-code --yes
+      --skill design-taste-frontend --global --agent "${SKILL_AGENTS[@]}" --yes
   fi
 
   if [ "${UPDATE:-0}" = "1" ] || [ -e "$DEST/skills/impeccable" ]; then
@@ -114,7 +136,7 @@ if [ "$DESIGN_SKILLS" = "1" ]; then
     npx impeccable update --global --no-hooks --yes
   else
     say "installing Impeccable (automatic hooks off)..."
-    npx impeccable install --global --providers=claude --no-hooks --yes
+    npx impeccable install --global --providers="$IMPECCABLE_PROVIDERS" --no-hooks --yes
   fi
 fi
 

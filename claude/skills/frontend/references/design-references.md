@@ -20,7 +20,7 @@ it, stopping as soon as it's clear:
 
 1. The current task's instructions.
 2. The existing design system, tokens, and visual language.
-3. Project docs already at hand — `DESIGN.md`, `PRODUCT.md`, `CLAUDE.md`, README.
+3. Project docs already at hand — `DESIGN.md`, `PRODUCT.md`, `CLAUDE.md`/`AGENTS.md`, README.
 4. Nearby screens and components.
 5. The app's identity and purpose, when obvious.
 6. Otherwise, the neutral mode below.
@@ -28,7 +28,7 @@ it, stopping as soon as it's clear:
 The project's existing visual system wins unless the task asks for a redesign — a design skill's
 stronger opinions don't override a mature local system. Never carry one project's identity into
 another. Project-specific rules (brand, tokens, identity) live in that project's own
-`CLAUDE.md` / `DESIGN.md` / tokens / existing components, not in this skill.
+`CLAUDE.md` / `AGENTS.md` / `DESIGN.md` / tokens / existing components, not in this skill.
 
 **Calibration modes** — lightweight calibration, not themes. Pick the one the evidence supports and
 pass it to the design skill.
