@@ -48,7 +48,8 @@ Prefer keeping shared concerns separated:
 
 - Components → components
 - Hooks → hooks
-- Utilities → utils
+- Helpers → helpers (domain-specific)
+- Utilities → utils (generic, app-agnostic)
 - Types → types
 - Constants → constants
 - Services → services

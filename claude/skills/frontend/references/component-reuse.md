@@ -6,7 +6,7 @@ Check in this order, stopping as soon as one has what you need:
 
 1. **The current feature/route directory itself.** Sibling files here often already render or style the same kind of thing you're adding (a status, a badge, a loading state). This is the highest-value place to look and the one most often skipped in favor of jumping straight to a repo-wide search.
 2. **The project's shared/atomic component location.**
-3. **A repo-wide search** — only if neither of the above has it. Don't assume the answer is a component with a matching name: a shared utility/helper function counts as reusable too (e.g. something like `getStatusClasses`/`statusStyles` that returns styling rather than rendering markup). Search by UI purpose and domain terminology, not just component names — asked for a status indicator, that's `Status`, `Badge`, `Tag`, `Chip`, `Label`, `Pill`, `Indicator`, but also any helper whose job is producing that kind of styling.
+3. **A repo-wide search** — only if neither of the above has it. Don't assume the answer is a component with a matching name: a shared helper (in `helpers/`) or utility (in `utils/`) counts as reusable too (e.g. something like `getStatusClasses`/`statusStyles` that returns styling rather than rendering markup). Search by UI purpose and domain terminology, not just component names — asked for a status indicator, that's `Status`, `Badge`, `Tag`, `Chip`, `Label`, `Pill`, `Indicator`, but also any helper whose job is producing that kind of styling.
 
 ## Evaluating a candidate
 
@@ -24,8 +24,8 @@ Prefer reuse or a backward-compatible extension over a parallel new component �
 Projects vary; use whichever of these (or a mix) is already established in the repo you're in — don't introduce a new one:
 
 - `components/atoms|molecules|organisms|templates/` (atomic design)
-- `components/`, `hooks/`, `utils/`, `types/`, `constants/`, `services/`, `api/`, `lib/` (flat/domain split)
-- Route-local private folders: `_components/`, `_hooks/`, `_utils/`, `_types/`, `_constants/` alongside shared top-level equivalents
+- `components/`, `hooks/`, `helpers/`, `utils/`, `types/`, `constants/`, `services/`, `api/`, `lib/` (flat/domain split)
+- Route-local private folders: `_components/`, `_hooks/`, `_helpers/`, `_utils/`, `_types/`, `_constants/` alongside shared top-level equivalents
 
 ## UI / animation library decision hierarchy
 
