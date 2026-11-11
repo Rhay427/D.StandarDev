@@ -19,6 +19,17 @@ Stop exploring once you have enough information to implement safely — don't re
 
 Prefer the project's existing architecture over generic backend patterns. Before adding a new controller, service, repository, DTO, validator, utility, type, constant, query, or middleware/guard/interceptor, search for an existing equivalent first and extend it if reasonable. Don't introduce an abstraction just because it's theoretically cleaner.
 
+## Directory Conventions
+
+Keep these in their own folders rather than inline in a controller, service, or route file:
+
+- Types/interfaces/DTO shapes → `types/`
+- Utilities → `utils/` — generic, app-agnostic pure functions (dates, strings, crypto wrappers) that would work unchanged in any project
+- Helpers → `helpers/` — functions that know this app's domain (e.g. `buildOrderSummary`, `toPublicUser`)
+- Constants → `constants/` — enums, limits, error codes, config keys (never secrets)
+
+If the project already uses a different name for one of these (e.g. `lib/` for utils), use that. If it has no folder for the category you're adding, create the one above at the same level as its siblings. In a module-based layout (e.g. `modules/orders/`), put module-only code in that module's own `types/`, `helpers/`, etc., and code shared across modules in the top-level equivalent.
+
 ## API Behavior
 
 - Follow existing endpoint, routing, and response-envelope conventions.

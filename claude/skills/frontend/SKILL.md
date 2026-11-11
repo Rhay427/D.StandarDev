@@ -26,7 +26,7 @@ Decide which one applies before doing anything else — this is what keeps small
 
 **Full path** — a new component, a new feature area, or a change that spans multiple files/directories where the right pattern isn't obvious from the file alone. Look only at what's relevant to what you're actually adding:
 
-- Adding UI? Check two places, in order, and stop as soon as one has what you need: (1) the current feature/route directory itself — sibling files there often already render or style the same kind of thing (a status, a badge, a loading state), and (2) the project's shared/atomic component location. Only widen to a repo-wide search if neither has it. See `references/component-reuse.md` for the search technique and how to evaluate what you find. Skip all of this for anything that isn't about UI reuse (a hook extraction, a utility, a type, a constant — for those, just check the relevant hooks/utils/types/constants folder directly, no reference needed). If neither place has a close pattern to extend and the task is substantial new visual UI, see **Design Skills** below rather than defaulting to a generic layout. For a new site, a major redesign, or explicit design exploration, `references/design-references.md` adds project-context calibration and reference routing (UX flow vs. composition vs. component) — it is not for ordinary full-path work like a hook extraction or a straightforward reusable component.
+- Adding UI? Check two places, in order, and stop as soon as one has what you need: (1) the current feature/route directory itself — sibling files there often already render or style the same kind of thing (a status, a badge, a loading state), and (2) the project's shared/atomic component location. Only widen to a repo-wide search if neither has it. See `references/component-reuse.md` for the search technique and how to evaluate what you find. Skip all of this for anything that isn't about UI reuse (a hook extraction, a helper, a utility, a type, a constant — for those, just check the relevant hooks/helpers/utils/types/constants folder directly, no reference needed). If neither place has a close pattern to extend and the task is substantial new visual UI, see **Design Skills** below rather than defaulting to a generic layout. For a new site, a major redesign, or explicit design exploration, `references/design-references.md` adds project-context calibration and reference routing (UX flow vs. composition vs. component) — it is not for ordinary full-path work like a hook extraction or a straightforward reusable component.
 - Extracting or moving logic (e.g. a hook)? Check how sibling routes/features already structure that kind of file — one or two comparable examples, not every sibling.
 - Otherwise, implement the smallest set of files that satisfies the requirement.
 
@@ -38,12 +38,16 @@ Either way: don't scan unrelated directories, apps, or packages "just in case," 
 
 Follow the project's existing structure — don't invent a new one. Whatever a project calls its top-level folders, keep these separated rather than bundling everything inside one feature or component folder:
 
-- Utilities → `utils/`
+- Utilities → `utils/` — generic, app-agnostic pure functions (dates, strings, arrays) that would work unchanged in any project
+- Helpers → `helpers/` — functions that know this app's domain (e.g. `getStatusClasses(order.status)`, `formatInvoiceTotal`)
+- Hooks → `hooks/` — every custom React hook (`use*`), never defined inline in a component file
 - Types → `types/`
 - Constants → `constants/`
 - Reusable UI → the project's existing component location (an atomic-design lib, a shared `components/` dir, or a route-local `_components/`)
 
-If the project uses route-local private folders (e.g. `_components/`, `_hooks/`, `_utils/`, `_types/`, `_constants/`), put feature-scoped code there and cross-feature code in the shared top-level equivalent instead. Only look inside the folder(s) the current change actually touches — e.g. adding a constant doesn't require inspecting `types/` or `hooks/` too.
+If the project already uses a different name for one of these (e.g. `lib/` for utils), use that. If it has no folder for the category you're adding, create the one above at the same level as its siblings.
+
+If the project uses route-local private folders (e.g. `_components/`, `_hooks/`, `_helpers/`, `_utils/`, `_types/`, `_constants/`), put feature-scoped code there and cross-feature code in the shared top-level equivalent instead. Only look inside the folder(s) the current change actually touches — e.g. adding a constant doesn't require inspecting `types/` or `hooks/` too.
 
 ---
 

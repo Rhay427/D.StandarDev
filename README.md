@@ -397,8 +397,8 @@ deployment targets, not separate sources to edit.
 
 | Skill | The rule that earns its place |
 |---|---|
-| `frontend` | Fast path vs. full path. Check the feature dir, then the shared component dir — stop at the first hit. **Platform before component**: `<input type="date">` before a calendar, CSS before JS. Never create a component as the first move. |
-| `backend` | Reuse the existing controller/service/repository pattern before adding one. Authentication is not authorization — check the *specific* resource. **Let the database enforce what it can**: a `CHECK` constraint holds for every writer; an app-level check holds only for the path you wrote it on. |
+| `frontend` | Fast path vs. full path. Check the feature dir, then the shared component dir — stop at the first hit. **Platform before component**: `<input type="date">` before a calendar, CSS before JS. Never create a component as the first move. Hooks, helpers (domain), utils (generic), types, and constants each get their own folder. |
+| `backend` | Reuse the existing controller/service/repository pattern before adding one. Authentication is not authorization — check the *specific* resource. **Let the database enforce what it can**: a `CHECK` constraint holds for every writer; an app-level check holds only for the path you wrote it on. Types, helpers, utils, and constants live in their own folders, not inline in controllers or services. |
 | `mobile` | Asks which platform you mean before touching permissions, native modules, or lifecycle — instead of silently picking one. Branches only at the point of real divergence. Never claims both platforms were tested unless both ran. |
 | `testing` | A table mapping each layer to its *narrowest* useful test, with an explicit "escalate only when." E2E is the escalation, never the default. A bug fix ships the test that reproduces it. |
 | `git` | Nothing is staged, committed, pushed, or turned into a PR unless you ask. Destructive commands are shown and confirmed before running. PRs get a fixed Problem / Solution / Changes / What to test / What to run structure. |
